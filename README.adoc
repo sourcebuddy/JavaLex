@@ -1,0 +1,280 @@
+= JavaLex
+
+
+Java Source Code Lexical Analyser and Changer
+
+The library in this project can
+
+* perform lexical analysis on Java source code
+
+* change the tokenized code
+
+* find code segments using pattern matching
+
+* convert the tokenized code back to Java source code.
+
+The code originally was written for the project Java::Geci as an experiment to support Java code generation depending on the lexicals instead of the bare text of the source.
+Later, the code was moved to the separate library so that it can be used independently in other projects.
+
+== Examples
+
+
+=== Simple List Matching
+
+In this section, we will look at a simple list matching.
+Through this example, we will learn
+
+* how to create a `JavaLexed` object, which is the tokenized Java code,
+
+* how to match a list of lexical elements, and
+
+* how to get the result of the match.
+
+The example is as follows.
+
+
+[source,java]
+----
+final var source = "private final int z = 13;\npublic var h = \"kkk\"";
+try (final var javaLexed = new JavaLexed(source)) {
+    final var result = javaLexed.match(match("private final int")).fromIndex(0).result();
+    Assertions.assertTrue(result.matches);
+    Assertions.assertEquals(0, result.start);
+    Assertions.assertEquals(5, result.end);
+}
+
+----
+
+
+NOTE: You can find the examples in the `TestMatching.java` unit test file.
+
+The Java source file has to be given in a string.
+When the object `javaLexed` is created the source is tokenized and the tokens are stored in the `javaLexed` object.
+The `javaLexed` object is used to find code segments using pattern matching, and to replace parts of the code if needed.
+
+If there is any change in the structure then the `javaLexed` object can be used to convert the tokenized code back to Java source code.
+To do that the `javaLexed` object has to be closed first, as we will see in later examples.
+In this example, closing is implicitly done with the try-with-resource statement.
+
+In this example, we simply check that the source code contains a list of lexical elements.
+It is done calling the `match` method on the `javaLexed` object.
+
+The `match` method argument is a match expression.
+When the method `fromIndex()` is invoked a match operation will start from the given index.
+It will result in a matching success if the lexical elements in that index match the given match expression.
+
+There is a pair of the method `match()`, which is `find()`.
+It does the same, however, it results in success if there is any match in the source code following the given index.
+
+The index is the serial number of the different lexical elements, that we will see later.
+Now the index is zero, which intuitively means the beginning of the source code.
+
+The method `result()` returns the result of the match operation.
+This `MatchResult` object contains three fields:
+
+. `matches` is a boolean value indicating if the match was successful or not.
+. `start` is the index of the first lexical element of the match.
+. `end` is the index of the first lexical element after the match.
+
+In this example, the match was successful, so the `matches` field is `true`.
+The match started at index 0, and ended at index 4.
+
+This may seem unintuitive, because `private final int` is only three lexical elements, how can it end at index 4 and not 2 (starting from zero)?
+The reason is that the lexical analysis keeps the spaces in the list of lexical elements.
+One or more space is treated as a single lexical element.
+That way the match is as follows:
+
+- `0 private`
+- `1 SPACE`
+- `2 final`
+- `3 SPACE`
+- `4 int`
+
+Finally, the field `end` is 5, which is the index of the first lexical element after the match.
+There may not actually be a lexical element with that index if the match ends at the end of the source.
+
+The last thing we have not discussed is the match expression.
+The match expression in this example is straightforward.
+It is created calling a static method `match` from the class `LexpressionBuilder`.
+This is a utility class that contains a lot of static methods to create match expressions.
+The recommended way is to import these static methods, so that the code is more readable using the
+
+  import static javax0.javalex.LexpressionBuilder.*;
+
+import line in your class.
+
+The method `match`, though has the same name as the one in the class `JavaLexed`, is a different method.
+It takes a string that it converts to a list of lexical elements.
+The match will be successful if the elements one by one match the lexical elements in the source code one after the other.
+
+In this example, we have learnt the basics of doing a lexical pattern matching on a Java source code.
+In the next section, we will see how we can take spaces into account.
+
+=== Matching with spaces
+
+In this section we will get accustomed to the method `find()`, which is the pair of `match()` in the class `JavaLexed`, and tell the matcher to take spaces into account.
+
+The sample unit test code doing just that is the following:
+
+[source,java]
+----
+final var source = "private final int z = 13;\npublic var /*comment*/h = \"kkk\"";
+try (final var javaLexed = new JavaLexed(source)) {
+    final var result = javaLexed.sensitivity(Lexpression.SPACE_SENSITIVE).find(match("public var h")).fromIndex(0).result();
+    Assertions.assertTrue(result.matches);
+    Assertions.assertEquals(13, result.start);
+    Assertions.assertEquals(19, result.end);
+}
+
+----
+
+
+The structure of the test is the same as the previous.
+We have a Java source in a string, we create a `JavaLexed` object, and we call the `find()` method on it.
+
+The difference is that we use the method `find()` instead of `match()` and also that we use the method `sensitivity()` to set the space sensitivity of the match.
+The argument to this method is an integer value, and it can be one of the following:
+
+* `NO_SENSITIVITY` (0)
+* `SPACE_SENSITIVE` (1), and
+* `COMMENT_SENSITIVE` (2).
+
+These constants are defined in the class `Lexpression`, and they can be used alone or combined with the bitwise or operator.
+In the example above, we do the matching space sensitive, but not comment sensitive.
+
+The matching is simple again; we use three tokens converted from a string.
+The matching does not care about the comment between the `var` keyword and the variable name.
+Note, however, the match does care about the spaces between the tokens.
+Because of that if there were a space following the comment as `pass:[var /*comment*/ h]` then the match would fail.
+That is because matching list of tokens are
+
+* `public`
+* `SPACE`
+* `var`
+* `SPACE`
+* `h`
+
+and the source is
+
+* `public`
+* `SPACE`
+* `var`
+* `SPACE` (before the comment)
+* `SPACE` (after the comment
+* `h`
+
+and the matching is space sensitive.
+
+If you count the tokens in the example, you can also see that the comment is a single token, and it counts in the indexing, even though the matching does not care about it.
+
+In this section, we have learnt how to do a simple match taking spaces into account and how to ignore the comments, which is the default, so it is fairly simple.
+In the next section, we will see what to do when we care about the comments.
+
+=== Matching with comments
+
+In this section, we will see how to match a list of tokens taking the comments into account.
+In addition to that, we will expand the toolset we use to build up a match expression a bit.
+
+The unit test code is similar to the previous one, but this time we call the method `sensitivity()` with the argument `COMMENT_SENSITIVE`.
+
+[source,java]
+----
+final var source = "private final int z = 13;\npublic var //comment\nh = \"kkk\"";
+try (final var javaLexed = new JavaLexed(source)) {
+    final var result = javaLexed.sensitivity(Lexpression.COMMENT_SENSITIVE).find(list(match("public var "), comment(), match("h"))).fromIndex(0).result();
+    Assertions.assertTrue(result.matches);
+    Assertions.assertEquals(13, result.start);
+    Assertions.assertEquals(20, result.end);
+}
+
+----
+
+
+The match expression this time is a list of tokens, just like before, but it is not created implicitly by the match expression builder.
+Instead, we create the list explicitly using the method `list()` from the class `LexpressionBuilder`.
+The arguments to this method are matchers, and the method returns a matcher that matches a list of the underlying matchers.
+It is composing the list matcher intelligently recognizing that the `match("public var ")` is already a list flattening the final list.
+The method `comment()` returns a matcher that matches a comment.
+
+In this section, we have learned how to match a list of tokens created explicitly and how to match comments.
+In the next one we will use a parameterized version of the `comment()` method to match only specific comments.
+
+=== Matching lexical elements with Patterns
+
+In this section, we will see how to match lexical elements using regular expressions.
+The regular expressions do not replace, rather extend the matching process.
+When we want to match a comment, a string, a symbol, it still has to be that: a comment, a string, or a symbol.
+However, in addition to that, we can specify a standard Java regular expression that the lexical element has to match.
+
+The mixing of match expressions and regular expressions may be confusing first, because the match expressions are technically also regular expressions.
+The difference is that they work on lexical elements, tokens, while the standard regular expressions work on characters.
+If you understand that, then you will see that the two are different, and how they can be mixed.
+
+The sample unit test in this case, again, differs only a little bit from the previous one.
+We provide an additional argument to the `comment()` method, which is a regular expression.
+
+[source,java]
+----
+final var source = "private final int z = 13;\npublic var //no no no\n" +
+        "h\npublic var //comment\nh = \"kkk\"";
+try (final var javaLexed = new JavaLexed(source)) {
+    final var result =
+            javaLexed.sensitivity(Lexpression.COMMENT_SENSITIVE)
+                    .find(list(match("public var "), comment(Pattern.compile("//c.*t")), match("h")))
+                    .fromStart().result();
+    Assertions.assertTrue(result.matches);
+    Assertions.assertEquals(21, result.start);
+    Assertions.assertEquals(28, result.end);
+}
+
+----
+
+
+The regular expression is a standard Java regular expression compiled using the `Pattern` class.
+If you count the tokens, you can see that the matching does not find the
+
+
+  public var //no no no
+h
+
+part, because the comment does not match the regular expression.
+`//no no no` does not match '`pass:[//c.*t]`'.
+On the other hand `//comment` does and thus the
+
+  public var //comment
+h
+
+part is matched.
+
+In this example, we added a regular expression to the comment matcher.
+If you study the API of the expression builder, you can see that most of the matchers have parameterized versions that take a regular expression, wherever it makes sense.
+
+In this section, we specified a regular expression to further restrict the matching.
+In the next section, we will see how we can retrieve the matched lexical elements.
+
+=== Matching lexical elements and retrieving their actual values
+
+In this section, we will see how we can retrieve the matched lexical elements when we provide a regular expression pattern to the match expression.
+
+
+[source,java]
+----
+final var source = "private final int z = 13;\npublic var //cummant\nh = \"kkk\"";
+try (final var javaLexed = new JavaLexed(source)) {
+    final var result =
+            javaLexed.sensitivity(Lexpression.COMMENT_SENSITIVE)
+                    .find(list(match("public var "), comment("what?", Pattern.compile("//(c.*t)")), match("h")))
+                    .fromStart().result();
+    Assertions.assertTrue(result.matches);
+    Assertions.assertEquals(13, result.start);
+    Assertions.assertEquals(20, result.end);
+    Assertions.assertTrue(javaLexed.regexGroups("what?").isPresent());
+    Assertions.assertEquals("cummant", javaLexed.regexGroups("what?").get().group(1));
+}
+
+----
+
+
+In this example, we add a string parameter to the `comment()` method.
+This is the name of the group that will be used to retrieve the matched lexical element.
+Later we will see that we can identify lexical elements
