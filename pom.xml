@@ -4,7 +4,7 @@
     <name>javaLex</name>
     <groupId>com.javax0.javaLex</groupId>
     <artifactId>javaLex</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <description>This is a library that can download Maven dependencies recursively.</description>
     <licenses>
         <license>
