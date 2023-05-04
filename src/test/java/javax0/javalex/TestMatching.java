@@ -105,6 +105,7 @@ public class TestMatching {
 
     @Test
     void testSimpleListFindingWithTextComments() {
+        //snippet testSimpleListFindingWithTextComments
         final var source = "private final int z = 13;\npublic var //comment\nh = \"kkk\"";
         try (final var javaLexed = new JavaLexed(source)) {
             final var result =
@@ -115,9 +116,9 @@ public class TestMatching {
             Assertions.assertEquals(13, result.start);
             Assertions.assertEquals(20, result.end);
         }
+        //end snippet
     }
 
-    //snippet testSimpleListFinding
     @Test
     void testSimpleListFinding() {
         final var source = "private final int z = 13;\npublic var h = \"kkk\"";
@@ -128,11 +129,10 @@ public class TestMatching {
             Assertions.assertEquals(18, result.end);
         }
     }
-    //end snippet
 
-    //snippet testSimpleGroupCollection
     @Test
     void testSimpleGroupCollection() {
+    //snippet testSimpleGroupCollection
         final var source = "private final int z = 13;\npublic var h = \"kkk\"";
         try (final var javaLexed = new JavaLexed(source)) {
             final var result = javaLexed.find(list(oneOf(group("protection"), "public", "private"), match("var h"))).fromStart().result();
@@ -142,14 +142,14 @@ public class TestMatching {
             Assertions.assertEquals(1, javaLexed.group("protection").size());
             Assertions.assertEquals("public", javaLexed.group("protection").get(0).getLexeme());
         }
-    }
     //end snippet
+    }
 
     @Test
     void testSimpleUnmatchedGroup() {
+        //snippet testSimpleUnmatchedGroup
         final var source = "private final int z = 13;\npublic var h = \"kkk\"";
         try (final var javaLexed = new JavaLexed(source)) {
-            //snippet testSimpleUnmatchedGroup
             javaLexed.find(list(group("protection", oneOf(match("public"), group("private", match("private")))), match("var h")));
             // skip 4 lines
             final var result = javaLexed.fromStart().result();
@@ -158,8 +158,8 @@ public class TestMatching {
             Assertions.assertEquals(18, result.end);
             Assertions.assertEquals(0, javaLexed.group("private").size());
             Assertions.assertEquals(1, javaLexed.group("protection").size());
-            // end snippet
         }
+        // end snippet
     }
 
     @Test
