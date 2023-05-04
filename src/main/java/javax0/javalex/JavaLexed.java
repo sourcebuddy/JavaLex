@@ -30,7 +30,7 @@ public class JavaLexed implements AutoCloseable {
                         new javax0.javalex.lex.Lexer()
                                 .spaceSensitive()
                                 .commentSensitive()
-                                .apply(Arrays.asList(source.split("\n", -1)))));
+                                .apply(source)));
     }
 
     @Override

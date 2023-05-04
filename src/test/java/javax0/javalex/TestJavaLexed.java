@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 public class TestJavaLexed {
 
+    // snippet testNullTransformation
     void testNullTransformation(String lines) {
         final var expected = lines;
         final String result;
@@ -19,7 +20,9 @@ public class TestJavaLexed {
         }
         Assertions.assertEquals(expected, result);
     }
+    // end snippet
 
+    // snippet toLexicalString
     private String toLexicalString(JavaLexed javaLexed) {
         StringBuilder sb = new StringBuilder();
         for (final var le : javaLexed.lexicalElements()) {
@@ -28,6 +31,7 @@ public class TestJavaLexed {
         }
         return sb.toString();
     }
+    // end snippet
 
     @Test
     void testEmptyNullTransformation() {
@@ -56,6 +60,7 @@ public class TestJavaLexed {
 
     @Test
     void iterateThrough() {
+        // snippet iterateThrough
         final var source =
                 "private final var apple= \"appleee\";   \n" +
                         "    private final final 13 'aaaaa' ";
@@ -86,6 +91,7 @@ public class TestJavaLexed {
                 "SPACING[ ]\n" +
                 "CHARACTER['aaaaa']\n" +
                 "SPACING[ ]\n", lexed);
+        //end snippet
     }
 
     @Test
@@ -130,6 +136,7 @@ public class TestJavaLexed {
     @Test
     @DisplayName("Can remove a single lexical element.")
     void removesElement() {
+        // snippet removeElement
         final var source = "public static final";
         final String lexed;
         try (final var sut = new JavaLexed(source)) {
@@ -140,6 +147,7 @@ public class TestJavaLexed {
                 "SPACING[ ]\n" +
                 "SPACING[ ]\n" +
                 "IDENTIFIER[final]\n", lexed);
+        // end snippet
     }
 
     @Test
@@ -155,17 +163,20 @@ public class TestJavaLexed {
     @Test
     @DisplayName("Can get a single lexical element by position.")
     void getsElement() {
+        // snippet getsElement
         final var source = "public static final";
         try (final var sut = new JavaLexed(source)) {
             final var lexicalElement = sut.get(2);
             Assertions.assertEquals(LexicalElement.Type.IDENTIFIER, lexicalElement.getType());
             Assertions.assertEquals("static", lexicalElement.getFullLexeme());
         }
+        // end snippet
     }
 
     @Test
     @DisplayName("Can remove a range of lexical elements.")
     void removesRange() {
+        // snippet removesRange
         final var source = "final static private";
         final String lexed;
         try (final var sut = new JavaLexed(source)) {
@@ -175,13 +186,14 @@ public class TestJavaLexed {
         Assertions.assertEquals("IDENTIFIER[final]\n" +
                 "SPACING[ ]\n" +
                 "IDENTIFIER[private]\n", lexed);
+        // end snippet
     }
 
     @Test
     @DisplayName("Can replace a range of lexical elements at the start.")
     void replacesRangeStart() {
+        // snippet replacesRangeStart
         final var source = "final private";
-        final var source3 = "private var";
         final String lexed;
         try (final var sut = new JavaLexed(source)) {
             sut.replace(0, 2, Arrays.asList(new Identifier("static"), new Spacing("   ")));
@@ -190,6 +202,7 @@ public class TestJavaLexed {
         Assertions.assertEquals("IDENTIFIER[static]\n" +
                 "SPACING[   ]\n" +
                 "IDENTIFIER[private]\n", lexed);
+        //end snippet
     }
 
     @Test
@@ -228,6 +241,7 @@ public class TestJavaLexed {
     @Test
     @DisplayName("Can replace a range of lexical elements with the Lex utility class.")
     void replacesRangeWithLex() {
+        // snippet replacesRangeWithLex
         final var source = "final private";
         final String lexed;
         try (final var sut = new JavaLexed(source)) {
@@ -237,5 +251,6 @@ public class TestJavaLexed {
         Assertions.assertEquals("IDENTIFIER[static]\n" +
                 "SPACING[   ]\n" +
                 "IDENTIFIER[private]\n", lexed);
+        //end snippet
     }
 }

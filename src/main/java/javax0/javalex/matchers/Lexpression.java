@@ -290,7 +290,7 @@ public class Lexpression {
     }
 
     public LexMatcher match(String string) {
-        return list(lexer.apply(Collections.singletonList(string)));
+        return list(lexer.apply(string));
     }
 
     public LexMatcher unordered(LexMatcher... matchers) {
@@ -303,7 +303,7 @@ public class Lexpression {
     }
 
     public LexMatcher unordered(String string) {
-        return unordered(lexer.apply(Collections.singletonList(string)));
+        return unordered(lexer.apply(string));
     }
 
     public LexMatcher group(String name, LexMatcher matcher) {
@@ -324,7 +324,7 @@ public class Lexpression {
     }
 
     public LexMatcher not(String string) {
-        return not(lexer.apply(Collections.singletonList(string)));
+        return not(lexer.apply(string));
     }
 
     public LexMatcher anyTill(LexMatcher... matchers) {
@@ -337,7 +337,7 @@ public class Lexpression {
     }
 
     public LexMatcher anyTill(String string) {
-        return anyTill(lexer.apply(Collections.singletonList(string)));
+        return anyTill(lexer.apply(string));
     }
 
     //<editor-fold id="methods">
@@ -577,7 +577,7 @@ public class Lexpression {
     //</editor-fold>
 
     private LexMatcher getMatcher(String string) {
-        final var lexicalElements = lexer.apply(Collections.singletonList(string));
+        final var lexicalElements = lexer.apply(string);
         if (lexicalElements.length == 1) {
             return terminal(lexicalElements[0]);
         } else {

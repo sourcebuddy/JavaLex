@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class Lexer implements Function<List<String>, javax0.javalex.LexicalElement[]> {
+public class Lexer implements Function<String, javax0.javalex.LexicalElement[]> {
 
     private boolean spaceSensitive = false;
     private boolean commentSensitive = false;
@@ -66,8 +66,8 @@ public class Lexer implements Function<List<String>, javax0.javalex.LexicalEleme
     }
 
     @Override
-    public LexicalElement[] apply(List<String> strings) {
-        final var code = new StringBuilder(String.join("\n", strings));
+    public LexicalElement[] apply(String source) {
+        final var code = new StringBuilder(String.join("\n", source));
         final var lexicalElements = new ArrayList<LexicalElement>();
         while (code.length() > 0) {
             final var nextLex = next(code);

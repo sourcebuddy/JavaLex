@@ -1,8 +1,38 @@
-= JavaLex
+= JavaLex a lexical level analyser for Java source code
 
 
 
-Java Source Code Lexical Analyser and Changer
+
+== Why?
+
+Why do you need another lexical analyzer for Java?
+The different compilers and parsers already do lexical parsing along with syntax analysis.
+So what is the advantage of doing it again?
+
+The answer is that JavaLex is not simply a lexical analyzer.
+It also includes tools to support the analysis of the lexical elements.
+At the bottom, it does the unavoidable lexical analysis, but this is a thing that is already implemented in many other tools.
+However, the list of the tokens, which is usually the result of the lexical analysis, does not get fed into a syntax analyzer but can be
+
+* queried,
+* modified, and
+* compared.
+
+You can create patterns similar to regular expressions to match or find certain parts of the code.
+You can replace specified tokens or regions.
+Last but not least, you can compare two different source code files deciding whether they are the same.
+The comparison can be made
+
+* ignoring the spaces and
+* comments,
+* treating multi-line and single-line strings as the same if their content matches, and
+* ignoring differences sourcing from `\u` escape sequences.
+
+which is a feature that is not available in the standard Java tools.
+This feature is heavily used in code generation tools, like Java::Geci, that need to know if the code generated was already there or has been changed.
+
+
+== Introduction
 
 The library in this project can
 
@@ -718,3 +748,265 @@ The method signatures and the documentation are generated from the source file u
     * ``comment(name, pattern) ``
          match a Java comment with the given name and pattern.
          The regular expression groups will also be stored under the name.
+
+
+== Changing the code
+
+In the previous chapters, we have looked at how to match certain parts of the token list.
+In this chapter, we will see how to change the token list.
+
+The token list after the lexical analysis is in the object `JavaLexed`.
+This token list can be changed
+
+* deleting tokens,
+* replacing ranges,
+* inserting new tokens, and
+* converting the token list to a string.
+
+To do that the class `JavaLexed` provides methods.
+We will look at these methods through examples.
+
+==== Converting the modified token list to a string
+
+In the first example, we look at how to convert the token list back to a string.
+The example does not modify the token list, which would not make sense in a practical case.
+However, this is the first step to learn.
+If we cannot get the source code after the modification, the changes would be lost.
+
+[source,java]
+----
+void testNullTransformation(String lines) {
+    final var expected = lines;
+    final String result;
+    try (final var sut = new JavaLexed(lines)) {
+        // do nothing, no transformation on lexical level
+        result = sut.toString();
+    }
+    Assertions.assertEquals(expected, result);
+}
+
+----
+
+
+To get the string version of the token list, we call the method `toString()` on the object `JavaLexed`.
+This conversion is the concatenation of the tokens in the list.
+Remember that the token list includes all the spaces, comments and new lines as well.
+The conversion back and forth will result exactly in the same string as the original source code unless the token list was modified.
+
+The example method is called with several different Java sources in the unit test source code `TestJavaLexed.java`.
+
+=== Looping through the tokens
+
+You can use the `JavaLexed` object to loop through the elements.
+This is demonstrated by a method from the unit test file, which converts the tokens to a debug string.
+
+[source,java]
+----
+private String toLexicalString(JavaLexed javaLexed) {
+    StringBuilder sb = new StringBuilder();
+    for (final var le : javaLexed.lexicalElements()) {
+        sb.append(le.getType().name()).append("[")
+                .append(le.getFullLexeme()).append("]").append("\n");
+    }
+    return sb.toString();
+}
+
+----
+
+
+The method `lexicalElements()` return an `Iterable` object of the lexical elements.
+This utility method, which is only a test method and not part of the API iterates through the elements and concatenates them into a string with some decoration.
+
+The following code shows the usage and the result of this utility method:
+
+[source,java]
+----
+final var source =
+        "private final var apple= \"appleee\";   \n" +
+                "    private final final 13 'aaaaa' ";
+final String lexed;
+try (final var sut = new JavaLexed(source)) {
+    lexed = toLexicalString(sut);
+}
+Assertions.assertEquals("IDENTIFIER[private]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[final]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[var]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[apple]\n" +
+        "SYMBOL[=]\n" +
+        "SPACING[ ]\n" +
+        "STRING[\"appleee\"]\n" +
+        "SYMBOL[;]\n" +
+        "SPACING[   \n" +
+        "    ]\n" +
+        "IDENTIFIER[private]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[final]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[final]\n" +
+        "SPACING[ ]\n" +
+        "INTEGER[13]\n" +
+        "SPACING[ ]\n" +
+        "CHARACTER['aaaaa']\n" +
+        "SPACING[ ]\n", lexed);
+
+----
+
+
+The following examples heavily use this method to visualize the result of the different transformations.
+
+=== Removing tokens
+
+We can remove a single token from the token list.
+
+[source,java]
+----
+final var source = "public static final";
+final String lexed;
+try (final var sut = new JavaLexed(source)) {
+    sut.remove(2);
+    lexed = toLexicalString(sut);
+}
+Assertions.assertEquals("IDENTIFIER[public]\n" +
+        "SPACING[ ]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[final]\n", lexed);
+
+----
+
+
+The example above calls the method `remove()` on the `JavaLexed` object.
+The method removes the token at the index given as the argument.
+The indexing, as usual in Java, starts with zero.
+The third token in this case is the keyword `static`.
+The first one, indexed with zero is the keyword `public.
+The second one, indexed with one is a space`.
+
+Removing the third token will result a token list as demonstrated in the assertion.
+Note that this token list contains two adjacent space tokens, which may not be the result of the lexical analysis.
+One or more neighboring spaces and new lines are always collapsed into a single space token.
+
+In addition to removing a single token, you can remove a range of tokens.
+
+[source,java]
+----
+final var source = "final static private";
+final String lexed;
+try (final var sut = new JavaLexed(source)) {
+    sut.removeRange(1, 3);
+    lexed = toLexicalString(sut);
+}
+Assertions.assertEquals("IDENTIFIER[final]\n" +
+        "SPACING[ ]\n" +
+        "IDENTIFIER[private]\n", lexed);
+
+----
+
+
+The method `removeRange(int, int)` removes the tokens from the index given as the first argument to the index given as the second argument.
+
+=== Replacing tokens
+
+We can replace tokens, not only remove them.
+
+[source,java]
+----
+final var source = "final private";
+final String lexed;
+try (final var sut = new JavaLexed(source)) {
+    sut.replace(0, 2, Arrays.asList(new Identifier("static"), new Spacing("   ")));
+    lexed = toLexicalString(sut);
+}
+Assertions.assertEquals("IDENTIFIER[static]\n" +
+        "SPACING[   ]\n" +
+        "IDENTIFIER[private]\n", lexed);
+
+----
+
+
+The method `replace()` has three arguments.
+The first two are the start and the end of the range to be replaced.
+The start is inclusive, the end index is exclusive.
+That way replace replaces the tokens from the __start__ till the __end-1__.
+
+The third argument is the replacement.
+This is a list that can be created as shown in the example, but there is a convenient method for that.
+
+[source,java]
+----
+final var source = "final private";
+final String lexed;
+try (final var sut = new JavaLexed(source)) {
+    sut.replace(0, 2, Lex.of("static   "));
+    lexed = toLexicalString(sut);
+}
+Assertions.assertEquals("IDENTIFIER[static]\n" +
+        "SPACING[   ]\n" +
+        "IDENTIFIER[private]\n", lexed);
+
+----
+
+
+The utility class `Lex` has a method `of()` that creates a list of lexical elements from a string.
+
+Note that in both examples the number of spaces following the `static` keyword is reserved.
+
+=== Reading a single token
+
+If you know the position of a token, you can fetch it.
+
+[source,java]
+----
+final var source = "public static final";
+try (final var sut = new JavaLexed(source)) {
+    final var lexicalElement = sut.get(2);
+    Assertions.assertEquals(LexicalElement.Type.IDENTIFIER, lexicalElement.getType());
+    Assertions.assertEquals("static", lexicalElement.getFullLexeme());
+}
+
+----
+
+
+The method `get(int)` will return the element at the given index.
+When you have the lexical element, you can get its type and the lexeme as a string.
+
+== Comparing sources
+
+The library contains a simple comparison tool to compare two sources.
+The comparison is done on the lexical level.
+The class `JavaSourceDiff` implements the `BiPredicate<String, String>` interface.
+
+It returns `true` if the two sources differ.
+
+By default, the comparison ignores
+
+* the comments,
+
+* the difference in spaces and new lines, and
+
+* the different representations of identical numbers, characters, and strings.
+
+The comment sensitivity can be changed by calling the method `commentSensitive()`.
+The other insensitivities are hard-wired.
+For example, if sources differ only in that one contains the number `32` while the other `0x20`, they are identical.
+
+The following example shows a comparison where the two sources differ only in formatting.
+
+[source,java]
+----
+final var s1 = "    void test(){\n" +
+        "        final var s1 = \"\";\n" +
+        "        final var s2 = \"\";\n" +
+        "        Assertions.assertTrue( new Comparator().test(Arrays.asList(s1.split(\"\\n\",-1)),Arrays.asList(s2.split(\"\\n\",-1))));\n" +
+        "    }";
+final var s2 = "    void test(){\n" +
+        "                                 final var s1 = \"\";\n" +
+        "        final var \n" +
+        "                s2 = \"\";\n" +
+        "        Assertions.assertTrue( new Comparator().test(Arrays.asList(s1.split(\"\\n\",-1)),Arrays.asList(s2.split(\"\\n\",-1))));\n" +
+        "    }";
+Assertions.assertFalse( new JavaSourceDiff().test(s1, s2));
+
+----
