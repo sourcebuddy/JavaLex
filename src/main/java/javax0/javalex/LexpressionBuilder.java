@@ -16,7 +16,7 @@ public class LexpressionBuilder {
 
     private static javax0.javalex.matchers.LexMatcher[] X(BiFunction<JavaLexed, Lexpression, LexMatcher>[] matchers, JavaLexed jLex, Lexpression e) {
         return
-            Arrays.stream(matchers).map(matcher -> X(matcher, jLex, e)).toArray(javax0.javalex.matchers.LexMatcher[]::new);
+                Arrays.stream(matchers).map(matcher -> X(matcher, jLex, e)).toArray(javax0.javalex.matchers.LexMatcher[]::new);
     }
 
 
@@ -28,12 +28,12 @@ public class LexpressionBuilder {
         }
 
         @Override
-        public String toString(){
+        public String toString() {
             return name;
         }
     }
 
-    public static GroupNameWrapper group(String name){
+    public static GroupNameWrapper group(String name) {
         return new GroupNameWrapper(name);
     }
 
@@ -41,6 +41,8 @@ public class LexpressionBuilder {
 
 
     // snippet BuilderMethods
+    //{%@define STORED=The lexical element matched will be stored under the group name.%}
+    //{%@define REGSTORED=The regular expression groups will also be stored under the name.%}
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> modifier(int mask) {
         // one modifier. `mask` is an integer as defined in the JDK class `Modifier`.
         return (jLex, e) -> e.modifier(mask);
@@ -202,7 +204,7 @@ public class LexpressionBuilder {
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> modifier(GroupNameWrapper nameWrapper, int mask) {
         // match a modifier.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.modifier(nameWrapper, mask);
     }
 
@@ -213,7 +215,7 @@ public class LexpressionBuilder {
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> oneOf(GroupNameWrapper nameWrapper, BiFunction<JavaLexed, Lexpression, LexMatcher>... matchers) {
         // match one of the matchers.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.oneOf(nameWrapper, X(matchers, jLex, e));
     }
 
@@ -231,25 +233,25 @@ public class LexpressionBuilder {
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> optional(GroupNameWrapper nameWrapper, BiFunction<JavaLexed, Lexpression, LexMatcher> matcher) {
         // match zero or one of the matcher.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.optional(nameWrapper, X(matcher, jLex, e));
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> optional(GroupNameWrapper nameWrapper, String string) {
         // match zero or one of the lexical elements.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.optional(nameWrapper, string);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> oneOrMore(GroupNameWrapper nameWrapper, BiFunction<JavaLexed, Lexpression, LexMatcher> matcher) {
         // match one or more of the matcher.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.oneOrMore(nameWrapper, X(matcher, jLex, e));
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> oneOrMore(GroupNameWrapper nameWrapper, String string) {
         // match one or more of the lexical elements converted from the string.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.oneOrMore(nameWrapper, string);
     }
 
@@ -267,13 +269,13 @@ public class LexpressionBuilder {
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> integerNumber(GroupNameWrapper nameWrapper) {
         // match an integer number.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.integerNumber(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> integerNumber(GroupNameWrapper nameWrapper, Predicate<Long> predicate) {
         // match an integer number and check it against the predicate.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.integerNumber(nameWrapper, predicate);
     }
 
@@ -285,19 +287,19 @@ public class LexpressionBuilder {
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> number(GroupNameWrapper nameWrapper, Predicate<Number> predicate) {
         // match a number either integer or float and check it against the predicate.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.number(nameWrapper, predicate);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> floatNumber(GroupNameWrapper nameWrapper) {
         // match a float number.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.floatNumber(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> floatNumber(GroupNameWrapper nameWrapper, Predicate<Double> predicate) {
         // match a float number and check it against the predicate.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.floatNumber(nameWrapper, predicate);
     }
 
@@ -382,53 +384,51 @@ public class LexpressionBuilder {
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> identifier(GroupNameWrapper nameWrapper) {
         // match an identifier.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.identifier(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> identifier(GroupNameWrapper nameWrapper, String text) {
         // match an identifier with the given text.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         // This is a bit superficial, since the name was already given in the parameter, but it is here for consistency.
         return (jLex, e) -> e.identifier(nameWrapper, text);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> identifier(GroupNameWrapper nameWrapper, Pattern pattern) {
         // match an identifier with the given pattern.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         // Note that this is not the regular expression groups.
         return (jLex, e) -> e.identifier(nameWrapper, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> identifier(GroupNameWrapper nameWrapper, String name, Pattern pattern) {
         // match an identifier with the given name and pattern.
-        // {%@define STORED=The lexical element matched will be stored under the group name.%}
         // {%STORED%}
-        // {%@define REGSTORED=The regular expression groups will also be stored under the name.%}
         return (jLex, e) -> e.identifier(nameWrapper, name, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> character(GroupNameWrapper nameWrapper) {
         // match a character literal. This is a single character enclosed in single quotes.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.character(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> character(GroupNameWrapper nameWrapper, String text) {
         // match a character literal with the given text.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.character(nameWrapper, text);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> character(GroupNameWrapper nameWrapper, Pattern pattern) {
         // match a character literal with the given pattern.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.character(nameWrapper, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> character(GroupNameWrapper nameWrapper, String name, Pattern pattern) {
         // match a character literal with the given name and pattern.
-        // The lexical element matched will be stored under the group name.
+        // {%STORED%}
         // {%REGSTORED%}
         return (jLex, e) -> e.character(nameWrapper, name, pattern);
     }
@@ -436,28 +436,28 @@ public class LexpressionBuilder {
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> string(GroupNameWrapper nameWrapper) {
         // match a string literal. This is a sequence of characters enclosed in double quotes.
         // The mather also matches multi-line strings.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.string(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> string(GroupNameWrapper nameWrapper, String text) {
         // match a string literal with the given text.
         // The matcher also matches multi-line strings.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.string(nameWrapper, text);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> string(GroupNameWrapper nameWrapper, Pattern pattern) {
         // match a string literal with the given pattern.
         // The matcher also matches multi-line strings.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.string(nameWrapper, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> string(GroupNameWrapper nameWrapper, String name, Pattern pattern) {
         // match a string literal with the given name and pattern.
         // The matcher also matches multi-line strings.
-        // The lexical element matched will be stored under the group name.
+        // {%STORED%}
         // {%REGSTORED%}
         return (jLex, e) -> e.string(nameWrapper, name, pattern);
     }
@@ -465,53 +465,53 @@ public class LexpressionBuilder {
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> type(GroupNameWrapper nameWrapper) {
         // match a Java type declaration.
         // This can be a single name, or generics' enhanced type declaration.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.type(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> type(GroupNameWrapper nameWrapper, String text) {
         // match a Java type declaration with the given text.
         // This can be a single name, or generics' enhanced type declaration.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.type(nameWrapper, text);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> type(GroupNameWrapper nameWrapper, Pattern pattern) {
         // match a Java type declaration with the given pattern.
         // This can be a single name, or generics' enhanced type declaration.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.type(nameWrapper, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> type(GroupNameWrapper nameWrapper, String name, Pattern pattern) {
         // match a Java type declaration with the given name and pattern.
         // This can be a single name, or generics' enhanced type declaration.
-        // The lexical element matched will be stored under the group name.
+        // {%STORED%}
         // {%REGSTORED%}
         return (jLex, e) -> e.type(nameWrapper, name, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> comment(GroupNameWrapper nameWrapper) {
         // match a Java comment.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.comment(nameWrapper);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> comment(GroupNameWrapper nameWrapper, String text) {
         // match a Java comment with the given text.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.comment(nameWrapper, text);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> comment(GroupNameWrapper nameWrapper, Pattern pattern) {
         // match a Java comment with the given pattern.
-        // The lexical element matched will be stored under the name.
+        // {%STORED%}
         return (jLex, e) -> e.comment(nameWrapper, pattern);
     }
 
     public static BiFunction<JavaLexed, Lexpression, LexMatcher> comment(GroupNameWrapper nameWrapper, String name, Pattern pattern) {
         // match a Java comment with the given name and pattern.
-        // The lexical element matched will be stored under the group name.
+        // {%STORED%}
         // {%REGSTORED%}
         return (jLex, e) -> e.comment(nameWrapper, name, pattern);
     }

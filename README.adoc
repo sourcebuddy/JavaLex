@@ -463,291 +463,291 @@ The method signatures and the documentation are generated from the source file u
 
 === List of the methods
 
-    * ``modifier(int mask) ``
-         one modifier. `mask` is an integer as defined in the JDK class `Modifier`.
-    * ``keyword(id) ``
-         match a keyword.
-    * ``oneOf(. . . matchers) ``
-         match one of the matchers.
-    * ``zeroOrMore(matcher) ``
-         match zero or more times the matcher.
-    * ``zeroOrMore(string) ``
-         match zero or more times the matcher created from the string.
-    * ``optional(matcher) ``
-         match zero or one times the matcher.
-    * ``optional(string) ``
-         match zero or one times the matcher created from the string.
-    * ``oneOrMore(matcher) ``
-         match one or more times the matcher.
-    * ``oneOrMore(string) ``
-         match one or more times the matcher created from the string.
-    * ``repeat(matcher, int times) ``
-         match the matcher exactly `times` times.
-    * ``repeat(matcher, int min, int max) ``
-         match the matcher at least `min` times and at most `max` times.
-    * ``integerNumber() ``
-         match an integer number.
-    * ``integerNumber(Predicate<Long> predicate) ``
-         match an integer number that satisfies the predicate.
-    * ``number() ``
-         match a number, either integer or float.
-    * ``number(Predicate<Number> predicate) ``
-         match a number, either integer or float that satisfies the predicate.
-    * ``floatNumber() ``
-         match a float number
-    * ``floatNumber(Predicate<Double> predicate) ``
-         match a float number that satisfies the predicate.
-    * ``list(String. . . strings) ``
-         match a list of matchers created from the strings.
-         The matchers are matched in the order they are listed.
-    * ``list(. . . matchers) ``
-         match a list of matchers.
-    * ``match(string) ``
-         create a list of lexical elements from the string and match the list.
-    * ``unordered(. . . matchers) ``
-         match a list of matchers.
-         The actual lexical elements can be in any order.
-    * ``unordered(LexicalElement. . . elements) ``
-         match a list of lexical elements.
-         The actual lexical elements can be in any order.
-    * ``unordered(string) ``
-         create a list of lexical elements from the string and match the list.
-         The actual lexical elements can be in any order.
-    * ``group(name, matcher) ``
-         match the matcher and group the matched lexical elements under the name.
-    * ``oneOf(String. . . strings) ``
-         create matchers from the strings and match lexical elements that match one of them.
-    * ``not(. . . matchers) ``
-         match lexical elements that do not match any of the matchers.
-    * ``not(LexicalElement. . . elements) ``
-         match lexical elements that do not match any of the lexical elements.
-    * ``not(string) ``
-         create a matcher from the string and match lexical elements that do not match it.
-    * ``anyTill(. . . matchers) ``
-         match lexical elements until one of the matchers matches.
-    * ``anyTill(LexicalElement. . . elements) ``
-         match lexical elements until one of the lexical elements matches.
-    * ``anyTill(string) ``
-         create a matcher from the string and match lexical elements until it matches.
-    * ``modifier(groupName, int mask) ``
-         match a modifier.
-         The lexical element matched will be stored under the name.
-    * ``keyword(groupName, id) ``
-         match a keyword.
-    * ``oneOf(groupName, . . . matchers) ``
-         match one of the matchers.
-         The lexical element matched will be stored under the name.
-    * ``zeroOrMore(groupName, matcher) ``
-         match zero or more of the matchers.
-         The lexical elements matched will be stored under the name.
-    * ``zeroOrMore(groupName, string) ``
-         match zero or more of the lexical elements.
-         The lexical elements matched will be stored under the name.
-    * ``optional(groupName, matcher) ``
-         match zero or one of the matcher.
-         The lexical element matched will be stored under the name.
-    * ``optional(groupName, string) ``
-         match zero or one of the lexical elements.
-         The lexical element matched will be stored under the name.
-    * ``oneOrMore(groupName, matcher) ``
-         match one or more of the matcher.
-         The lexical element matched will be stored under the name.
-    * ``oneOrMore(groupName, string) ``
-         match one or more of the lexical elements converted from the string.
-         The lexical element matched will be stored under the name.
-    * ``repeat(groupName, matcher, int times) ``
-         match the matcher the specified number of times.
-         The lexical elements matched will be stored under the name.
-    * ``repeat(groupName, matcher, int min, int max) ``
-         match the matcher the specified number of times, minimum and maximum.
-         The lexical elements matched will be stored under the name.
-    * ``integerNumber(groupName) ``
-         match an integer number.
-         The lexical element matched will be stored under the name.
-    * ``integerNumber(groupName, Predicate<Long> predicate) ``
-         match an integer number and check it against the predicate.
-         The lexical element matched will be stored under the name.
-    * ``number(groupName) ``
-         match a number either integer or float.
+    
+    
+* ``modifier(int mask) ``
+        one modifier. `mask` is an integer as defined in the JDK class `Modifier`.
+* ``keyword(id) ``
+        match a keyword.
+* ``oneOf(. . . matchers) ``
+        match one of the matchers.
+* ``zeroOrMore(matcher) ``
+        match zero or more times the matcher.
+* ``zeroOrMore(string) ``
+        match zero or more times the matcher created from the string.
+* ``optional(matcher) ``
+        match zero or one times the matcher.
+* ``optional(string) ``
+        match zero or one times the matcher created from the string.
+* ``oneOrMore(matcher) ``
+        match one or more times the matcher.
+* ``oneOrMore(string) ``
+        match one or more times the matcher created from the string.
+* ``repeat(matcher, int times) ``
+        match the matcher exactly `times` times.
+* ``repeat(matcher, int min, int max) ``
+        match the matcher at least `min` times and at most `max` times.
+* ``integerNumber() ``
+        match an integer number.
+* ``integerNumber(Predicate<Long> predicate) ``
+        match an integer number that satisfies the predicate.
+* ``number() ``
+        match a number, either integer or float.
+* ``number(Predicate<Number> predicate) ``
+        match a number, either integer or float that satisfies the predicate.
+* ``floatNumber() ``
+        match a float number
+* ``floatNumber(Predicate<Double> predicate) ``
+        match a float number that satisfies the predicate.
+* ``list(String. . . strings) ``
+        match a list of matchers created from the strings.
+        The matchers are matched in the order they are listed.
+* ``list(. . . matchers) ``
+        match a list of matchers.
+* ``match(string) ``
+        create a list of lexical elements from the string and match the list.
+* ``unordered(. . . matchers) ``
+        match a list of matchers.
+        The actual lexical elements can be in any order.
+* ``unordered(LexicalElement. . . elements) ``
+        match a list of lexical elements.
+        The actual lexical elements can be in any order.
+* ``unordered(string) ``
+        create a list of lexical elements from the string and match the list.
+        The actual lexical elements can be in any order.
+* ``group(name, matcher) ``
+        match the matcher and group the matched lexical elements under the name.
+* ``oneOf(String. . . strings) ``
+        create matchers from the strings and match lexical elements that match one of them.
+* ``not(. . . matchers) ``
+        match lexical elements that do not match any of the matchers.
+* ``not(LexicalElement. . . elements) ``
+        match lexical elements that do not match any of the lexical elements.
+* ``not(string) ``
+        create a matcher from the string and match lexical elements that do not match it.
+* ``anyTill(. . . matchers) ``
+        match lexical elements until one of the matchers matches.
+* ``anyTill(LexicalElement. . . elements) ``
+        match lexical elements until one of the lexical elements matches.
+* ``anyTill(string) ``
+        create a matcher from the string and match lexical elements until it matches.
+* ``modifier(groupName, int mask) ``
+        match a modifier.
+        The lexical element matched will be stored under the group name.
+* ``keyword(groupName, id) ``
+        match a keyword.
+* ``oneOf(groupName, . . . matchers) ``
+        match one of the matchers.
+        The lexical element matched will be stored under the group name.
+* ``zeroOrMore(groupName, matcher) ``
+        match zero or more of the matchers.
+        The lexical elements matched will be stored under the name.
+* ``zeroOrMore(groupName, string) ``
+        match zero or more of the lexical elements.
+        The lexical elements matched will be stored under the name.
+* ``optional(groupName, matcher) ``
+        match zero or one of the matcher.
+        The lexical element matched will be stored under the group name.
+* ``optional(groupName, string) ``
+        match zero or one of the lexical elements.
+        The lexical element matched will be stored under the group name.
+* ``oneOrMore(groupName, matcher) ``
+        match one or more of the matcher.
+        The lexical element matched will be stored under the group name.
+* ``oneOrMore(groupName, string) ``
+        match one or more of the lexical elements converted from the string.
+        The lexical element matched will be stored under the group name.
+* ``repeat(groupName, matcher, int times) ``
+        match the matcher the specified number of times.
+        The lexical elements matched will be stored under the name.
+* ``repeat(groupName, matcher, int min, int max) ``
+        match the matcher the specified number of times, minimum and maximum.
+        The lexical elements matched will be stored under the name.
+* ``integerNumber(groupName) ``
+        match an integer number.
+        The lexical element matched will be stored under the group name.
+* ``integerNumber(groupName, Predicate<Long> predicate) ``
+        match an integer number and check it against the predicate.
+        The lexical element matched will be stored under the group name.
+* ``number(groupName) ``
+        match a number either integer or float.
         
-    * ``number(groupName, Predicate<Number> predicate) ``
-         match a number either integer or float and check it against the predicate.
-         The lexical element matched will be stored under the name.
-    * ``floatNumber(groupName) ``
-         match a float number.
-         The lexical element matched will be stored under the name.
-    * ``floatNumber(groupName, Predicate<Double> predicate) ``
-         match a float number and check it against the predicate.
-         The lexical element matched will be stored under the name.
-    * ``list(groupName, String. . . strings) ``
-         match a list of lexical elements converted from the strings.
-         The lexical elements matched will be stored under the name.
-    * ``list(groupName, . . . matchers) ``
-         match a list of matchers.
-         The lexical elements matched will be stored under the name.
-    * ``match(groupName, string) ``
-         match lexical elements converted from the string.
-         The lexical elements matched will be stored under the name.
-    * ``unordered(groupName, . . . matchers) ``
-         match the matchers in any order.
-         The lexical elements matched will be stored under the name.
-    * ``unordered(groupName, LexicalElement. . . elements) ``
-         match the lexical elements in any order.
-         The lexical elements matched will be stored under the name.
-    * ``unordered(groupName, string) ``
-         match the lexical elements converted from the string in any order.
-         The lexical elements matched will be stored under the name.
-    * ``oneOf(groupName, String. . . strings) ``
-         match one of the lexical elements converted from the strings.
-         The lexical elements matched will be stored under the name.
-    * ``not(groupName, . . . matchers) ``
-         create a matcher that does not match the list of matchers.
-         The process goes through the matchers taking the lexical elements one by one as consumed by the matchers, and if any of them matches, then this matcher does not.
-         The lexical elements "matched" will be stored under the name.
-    * ``not(groupName, LexicalElement. . . elements) ``
-         create a matcher that does not match the list of lexical elements.
-         The lexical elements "matched" will be stored under the name.
-    * ``not(groupName, string) ``
-         create a matcher that does not match the lexical elements converted from the string.
-         The lexical elements "matched" will be stored under the name.
-    * ``anyTill(groupName, . . . matchers) ``
-         match any lexical elements until the list of matchers matches.
-         The lexical elements matched will be stored under the name.
-    * ``anyTill(groupName, LexicalElement. . . elements) ``
-         match any lexical elements until the list of lexical elements matches.
-         The lexical elements matched will be stored under the name.
-    * ``anyTill(groupName, string) ``
-         match any lexical elements until the lexical elements converted from the string matches.
-         The lexical elements matched will be stored under the name.
-    * ``identifier(groupName) ``
-         match an identifier.
-         The lexical element matched will be stored under the name.
-    * ``identifier(groupName, text) ``
-         match an identifier with the given text.
-         The lexical element matched will be stored under the name.
-         This is a bit superficial, since the name was already given in the parameter, but it is here for consistency.
-    * ``identifier(groupName, pattern) ``
-         match an identifier with the given pattern.
-         The lexical element matched will be stored under the name.
-         Note that this is not the regular expression groups.
-    * ``identifier(groupName, name, pattern) ``
-         match an identifier with the given name and pattern.
-         
-         The lexical element matched will be stored under the group name.
-         
-    * ``character(groupName) ``
-         match a character literal. This is a single character enclosed in single quotes.
-         The lexical element matched will be stored under the name.
-    * ``character(groupName, text) ``
-         match a character literal with the given text.
-         The lexical element matched will be stored under the name.
-    * ``character(groupName, pattern) ``
-         match a character literal with the given pattern.
-         The lexical element matched will be stored under the name.
-    * ``character(groupName, name, pattern) ``
-         match a character literal with the given name and pattern.
-         The lexical element matched will be stored under the group name.
-         The regular expression groups will also be stored under the name.
-    * ``string(groupName) ``
-         match a string literal. This is a sequence of characters enclosed in double quotes.
-         The mather also matches multi-line strings.
-         The lexical element matched will be stored under the name.
-    * ``string(groupName, text) ``
-         match a string literal with the given text.
-         The matcher also matches multi-line strings.
-         The lexical element matched will be stored under the name.
-    * ``string(groupName, pattern) ``
-         match a string literal with the given pattern.
-         The matcher also matches multi-line strings.
-         The lexical element matched will be stored under the name.
-    * ``string(groupName, name, pattern) ``
-         match a string literal with the given name and pattern.
-         The matcher also matches multi-line strings.
-         The lexical element matched will be stored under the group name.
-         The regular expression groups will also be stored under the name.
-    * ``type(groupName) ``
-         match a Java type declaration.
-         This can be a single name, or generics' enhanced type declaration.
-         The lexical element matched will be stored under the name.
-    * ``type(groupName, text) ``
-         match a Java type declaration with the given text.
-         This can be a single name, or generics' enhanced type declaration.
-         The lexical element matched will be stored under the name.
-    * ``type(groupName, pattern) ``
-         match a Java type declaration with the given pattern.
-         This can be a single name, or generics' enhanced type declaration.
-         The lexical element matched will be stored under the name.
-    * ``type(groupName, name, pattern) ``
-         match a Java type declaration with the given name and pattern.
-         This can be a single name, or generics' enhanced type declaration.
-         The lexical element matched will be stored under the group name.
-         The regular expression groups will also be stored under the name.
-    * ``comment(groupName) ``
-         match a Java comment.
-         The lexical element matched will be stored under the name.
-    * ``comment(groupName, text) ``
-         match a Java comment with the given text.
-         The lexical element matched will be stored under the name.
-    * ``comment(groupName, pattern) ``
-         match a Java comment with the given pattern.
-         The lexical element matched will be stored under the name.
-    * ``comment(groupName, name, pattern) ``
-         match a Java comment with the given name and pattern.
-         The lexical element matched will be stored under the group name.
-         The regular expression groups will also be stored under the name.
-    * ``identifier() ``
-         match a Java identifier.
-    * ``identifier(text) ``
-         match a Java identifier with the given text.
-    * ``identifier(pattern) ``
-         match a Java identifier with the given pattern.
-    * ``identifier(name, pattern) ``
-         match a Java identifier with the given name and pattern.
-         The regular expression groups will also be stored under the name.
-    * ``character() ``
-         match a Java character literal.
-    * ``character(text) ``
-         match a Java character literal with the given text.
-    * ``character(pattern) ``
-         match a Java character literal with the given pattern.
-    * ``character(name, pattern) ``
-         match a Java character literal with the given pattern.
-         The regular expression groups will also be stored under the name.
-    * ``string() ``
-         match a Java string literal.
-         The matcher also matches multi-line strings.
-    * ``string(text) ``
-         match a Java string literal with the given text.
-         The matcher also matches multi-line strings.
-    * ``string(pattern) ``
-         match a Java string literal with the given pattern.
-         The matcher also matches multi-line strings.
-    * ``string(name, pattern) ``
-         match a Java string literal with the given name and pattern.
-         The matcher also matches multi-line strings.
-         The regular expression groups will also be stored under the name.
-    * ``type() ``
-         match a Java type declaration.
-         This can be a single name, or generics' enhanced type declaration.
-    * ``type(text) ``
-         match a Java type declaration with the given text.
-         This can be a single name, or generics' enhanced type declaration.
-    * ``type(pattern) ``
-         match a Java type declaration with the given pattern.
-         This can be a single name, or generics' enhanced type declaration.
-    * ``type(name, pattern) ``
-         match a Java type declaration with the given pattern.
-         This can be a single name, or generics' enhanced type declaration.
-         The regular expression groups will also be stored under the name.
-    * ``comment() ``
-         match a Java comment.
-    * ``comment(text) ``
-         match a Java comment with the given text.
-    * ``comment(pattern) ``
-         match a Java comment with the given pattern.
-    * ``comment(name, pattern) ``
-         match a Java comment with the given name and pattern.
-         The regular expression groups will also be stored under the name.
+* ``number(groupName, Predicate<Number> predicate) ``
+        match a number either integer or float and check it against the predicate.
+        The lexical element matched will be stored under the group name.
+* ``floatNumber(groupName) ``
+        match a float number.
+        The lexical element matched will be stored under the group name.
+* ``floatNumber(groupName, Predicate<Double> predicate) ``
+        match a float number and check it against the predicate.
+        The lexical element matched will be stored under the group name.
+* ``list(groupName, String. . . strings) ``
+        match a list of lexical elements converted from the strings.
+        The lexical elements matched will be stored under the name.
+* ``list(groupName, . . . matchers) ``
+        match a list of matchers.
+        The lexical elements matched will be stored under the name.
+* ``match(groupName, string) ``
+        match lexical elements converted from the string.
+        The lexical elements matched will be stored under the name.
+* ``unordered(groupName, . . . matchers) ``
+        match the matchers in any order.
+        The lexical elements matched will be stored under the name.
+* ``unordered(groupName, LexicalElement. . . elements) ``
+        match the lexical elements in any order.
+        The lexical elements matched will be stored under the name.
+* ``unordered(groupName, string) ``
+        match the lexical elements converted from the string in any order.
+        The lexical elements matched will be stored under the name.
+* ``oneOf(groupName, String. . . strings) ``
+        match one of the lexical elements converted from the strings.
+        The lexical elements matched will be stored under the name.
+* ``not(groupName, . . . matchers) ``
+        create a matcher that does not match the list of matchers.
+        The process goes through the matchers taking the lexical elements one by one as consumed by the matchers, and if any of them matches, then this matcher does not.
+        The lexical elements "matched" will be stored under the name.
+* ``not(groupName, LexicalElement. . . elements) ``
+        create a matcher that does not match the list of lexical elements.
+        The lexical elements "matched" will be stored under the name.
+* ``not(groupName, string) ``
+        create a matcher that does not match the lexical elements converted from the string.
+        The lexical elements "matched" will be stored under the name.
+* ``anyTill(groupName, . . . matchers) ``
+        match any lexical elements until the list of matchers matches.
+        The lexical elements matched will be stored under the name.
+* ``anyTill(groupName, LexicalElement. . . elements) ``
+        match any lexical elements until the list of lexical elements matches.
+        The lexical elements matched will be stored under the name.
+* ``anyTill(groupName, string) ``
+        match any lexical elements until the lexical elements converted from the string matches.
+        The lexical elements matched will be stored under the name.
+* ``identifier(groupName) ``
+        match an identifier.
+        The lexical element matched will be stored under the group name.
+* ``identifier(groupName, text) ``
+        match an identifier with the given text.
+        The lexical element matched will be stored under the group name.
+        This is a bit superficial, since the name was already given in the parameter, but it is here for consistency.
+* ``identifier(groupName, pattern) ``
+        match an identifier with the given pattern.
+        The lexical element matched will be stored under the group name.
+        Note that this is not the regular expression groups.
+* ``identifier(groupName, name, pattern) ``
+        match an identifier with the given name and pattern.
+        The lexical element matched will be stored under the group name.
+* ``character(groupName) ``
+        match a character literal. This is a single character enclosed in single quotes.
+        The lexical element matched will be stored under the group name.
+* ``character(groupName, text) ``
+        match a character literal with the given text.
+        The lexical element matched will be stored under the group name.
+* ``character(groupName, pattern) ``
+        match a character literal with the given pattern.
+        The lexical element matched will be stored under the group name.
+* ``character(groupName, name, pattern) ``
+        match a character literal with the given name and pattern.
+        The lexical element matched will be stored under the group name.
+        The regular expression groups will also be stored under the name.
+* ``string(groupName) ``
+        match a string literal. This is a sequence of characters enclosed in double quotes.
+        The mather also matches multi-line strings.
+        The lexical element matched will be stored under the group name.
+* ``string(groupName, text) ``
+        match a string literal with the given text.
+        The matcher also matches multi-line strings.
+        The lexical element matched will be stored under the group name.
+* ``string(groupName, pattern) ``
+        match a string literal with the given pattern.
+        The matcher also matches multi-line strings.
+        The lexical element matched will be stored under the group name.
+* ``string(groupName, name, pattern) ``
+        match a string literal with the given name and pattern.
+        The matcher also matches multi-line strings.
+        The lexical element matched will be stored under the group name.
+        The regular expression groups will also be stored under the name.
+* ``type(groupName) ``
+        match a Java type declaration.
+        This can be a single name, or generics' enhanced type declaration.
+        The lexical element matched will be stored under the group name.
+* ``type(groupName, text) ``
+        match a Java type declaration with the given text.
+        This can be a single name, or generics' enhanced type declaration.
+        The lexical element matched will be stored under the group name.
+* ``type(groupName, pattern) ``
+        match a Java type declaration with the given pattern.
+        This can be a single name, or generics' enhanced type declaration.
+        The lexical element matched will be stored under the group name.
+* ``type(groupName, name, pattern) ``
+        match a Java type declaration with the given name and pattern.
+        This can be a single name, or generics' enhanced type declaration.
+        The lexical element matched will be stored under the group name.
+        The regular expression groups will also be stored under the name.
+* ``comment(groupName) ``
+        match a Java comment.
+        The lexical element matched will be stored under the group name.
+* ``comment(groupName, text) ``
+        match a Java comment with the given text.
+        The lexical element matched will be stored under the group name.
+* ``comment(groupName, pattern) ``
+        match a Java comment with the given pattern.
+        The lexical element matched will be stored under the group name.
+* ``comment(groupName, name, pattern) ``
+        match a Java comment with the given name and pattern.
+        The lexical element matched will be stored under the group name.
+        The regular expression groups will also be stored under the name.
+* ``identifier() ``
+        match a Java identifier.
+* ``identifier(text) ``
+        match a Java identifier with the given text.
+* ``identifier(pattern) ``
+        match a Java identifier with the given pattern.
+* ``identifier(name, pattern) ``
+        match a Java identifier with the given name and pattern.
+        The regular expression groups will also be stored under the name.
+* ``character() ``
+        match a Java character literal.
+* ``character(text) ``
+        match a Java character literal with the given text.
+* ``character(pattern) ``
+        match a Java character literal with the given pattern.
+* ``character(name, pattern) ``
+        match a Java character literal with the given pattern.
+        The regular expression groups will also be stored under the name.
+* ``string() ``
+        match a Java string literal.
+        The matcher also matches multi-line strings.
+* ``string(text) ``
+        match a Java string literal with the given text.
+        The matcher also matches multi-line strings.
+* ``string(pattern) ``
+        match a Java string literal with the given pattern.
+        The matcher also matches multi-line strings.
+* ``string(name, pattern) ``
+        match a Java string literal with the given name and pattern.
+        The matcher also matches multi-line strings.
+        The regular expression groups will also be stored under the name.
+* ``type() ``
+        match a Java type declaration.
+        This can be a single name, or generics' enhanced type declaration.
+* ``type(text) ``
+        match a Java type declaration with the given text.
+        This can be a single name, or generics' enhanced type declaration.
+* ``type(pattern) ``
+        match a Java type declaration with the given pattern.
+        This can be a single name, or generics' enhanced type declaration.
+* ``type(name, pattern) ``
+        match a Java type declaration with the given pattern.
+        This can be a single name, or generics' enhanced type declaration.
+        The regular expression groups will also be stored under the name.
+* ``comment() ``
+        match a Java comment.
+* ``comment(text) ``
+        match a Java comment with the given text.
+* ``comment(pattern) ``
+        match a Java comment with the given pattern.
+* ``comment(name, pattern) ``
+        match a Java comment with the given name and pattern.
+        The regular expression groups will also be stored under the name.
 
 
 == Changing the code

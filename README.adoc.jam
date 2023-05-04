@@ -362,10 +362,10 @@ The method signatures and the documentation are generated from the source file u
 
 === List of the methods
 
-{%!#replaceLines replace="/public static BiFunction<JavaLexed, Lexpression, LexMatcher> (.+)\\{/* ``$1``/" \
+{%!#replaceLines replace="/\\s*public static BiFunction<JavaLexed, Lexpression, LexMatcher> (.+)\\{/* ``$1``/" \
 replace=/GroupNameWrapper\s|String\s|Pattern\s|BiFunction.*>\s?|LexicalElement\s// \
 replace="/\\.\\.\\./. . ./" \
-replace="~//~~" \
+replace="~//\\s*~~" \
 replace="~nameWrapper~groupName~"
 {%#killLines pattern="public static| //" keep
 {%@snip BuilderMethods%}

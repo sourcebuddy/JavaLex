@@ -19,11 +19,11 @@ $x
 --
 --------------------------------------------------------------------------------------------------------------------
 
-VERSION=1.0.0                              -- https://repo.maven.apache.org/maven2/com/javax0/mavenDownload/mavenDownloader/
+VERSION=1.0.2-SNAPSHOT                             -- https://repo.maven.apache.org/maven2/com/javax0/mavenDownload/mavenDownloader/
 
 GROUPID=com.javax0.javaLex                -- the project groupId.
 
-MODULE_PREFIX=javaLex.                    -- module names are sourcebuddy.XXXX
+MODULE_PREFIX=javaLex.                    -- module names are javaLex.XXXX
 PACKAGE_PREFIX=javax0.javaLex.            -- package names are less restrictive and it is not likely that anyone else would use javax0 as top level package
 
 JAVA_RELEASE=11
